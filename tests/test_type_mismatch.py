@@ -73,6 +73,7 @@ class MismatchTestCase(TestCase):
         assert item2.addr == {}
 
     def test_struct_mismatch(self):
+
         class MismatchStruct(TPayload):
             thrift_spec = {
                 1: (TType.STRING, 'a', False),
@@ -102,7 +103,7 @@ class MismatchTestCase(TestCase):
         p.read_struct(item2)
 
         assert len(item2.data) == 3
-        assert all([i.b for i in item2.data])
+        assert all(i.b for i in item2.data)
 
 
 if CYTHON:

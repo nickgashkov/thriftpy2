@@ -290,11 +290,7 @@ def p_simple_function(p):
         oneway = False
         base = 0
 
-    if p[len(p) - 1] == ')':
-        throws = []
-    else:
-        throws = p[len(p) - 1]
-
+    throws = [] if p[len(p) - 1] == ')' else p[len(p) - 1]
     p[0] = [oneway, p[base + 1], p[base + 2], p[base + 4], throws]
 
 
@@ -318,10 +314,7 @@ def p_throws(p):
 def p_function_type(p):
     '''function_type : field_type
                      | VOID'''
-    if p[1] == 'void':
-        p[0] = TType.VOID
-    else:
-        p[0] = p[1]
+    p[0] = TType.VOID if p[1] == 'void' else p[1]
 
 
 def p_field_seq(p):
@@ -406,7 +399,7 @@ def p_ref_type(p):
         p[0] = ref_type
 
 
-def p_simple_base_type(p):  # noqa
+def p_simple_base_type(p):    # noqa
     '''simple_base_type : BOOL
                         | BYTE
                         | I8
@@ -418,7 +411,7 @@ def p_simple_base_type(p):  # noqa
                         | BINARY'''
     if p[1] == 'bool':
         p[0] = TType.BOOL
-    if p[1] == 'byte' or p[1] == 'i8':
+    if p[1] in ['byte', 'i8']:
         p[0] = TType.BYTE
     if p[1] == 'i16':
         p[0] = TType.I16
@@ -475,10 +468,7 @@ def p_definition_type(p):
 def p_type_annotations(p):
     '''type_annotations : '(' type_annotation_seq ')'
                         |'''
-    if len(p) == 4:
-        p[0] = p[2]
-    else:
-        p[0] = None
+    p[0] = p[2] if len(p) == 4 else None
 
 
 def p_type_annotation_seq(p):

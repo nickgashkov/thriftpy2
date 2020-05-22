@@ -79,10 +79,9 @@ def make_server(service, handler,
     else:
         raise ValueError("Either host/port or unix_socket must be provided.")
 
-    server = TThreadedServer(processor, server_socket,
-                             iprot_factory=proto_factory,
-                             itrans_factory=trans_factory)
-    return server
+    return TThreadedServer(processor, server_socket,
+                                 iprot_factory=proto_factory,
+                                 itrans_factory=trans_factory)
 
 
 @contextlib.contextmanager

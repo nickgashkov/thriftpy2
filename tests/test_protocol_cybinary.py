@@ -56,7 +56,7 @@ def test_read_i8():
     b = TCyMemoryBuffer(b'\x7b')
     val = proto.read_val(b, TType.I08)
 
-    assert 123 == val
+    assert val == 123
 
 
 def test_write_i16():
@@ -71,7 +71,7 @@ def test_read_i16():
     b = TCyMemoryBuffer(b"09")
     val = proto.read_val(b, TType.I16)
 
-    assert 12345 == val
+    assert val == 12345
 
 
 def test_byteswap_i16():
@@ -93,7 +93,7 @@ def test_write_i32():
 
 def test_read_i32():
     b = TCyMemoryBuffer(b"I\x96\x02\xd2")
-    assert 1234567890 == proto.read_val(b, TType.I32)
+    assert proto.read_val(b, TType.I32) == 1234567890
 
 
 def test_write_i64():
@@ -105,7 +105,7 @@ def test_write_i64():
 
 def test_read_i64():
     b = TCyMemoryBuffer(b"\x11\"\x10\xf4}\xe9\x81\x15")
-    assert 1234567890123456789 == proto.read_val(b, TType.I64)
+    assert proto.read_val(b, TType.I64) == 1234567890123456789
 
 
 def test_write_double():
@@ -117,7 +117,7 @@ def test_write_double():
 
 def test_read_double():
     b = TCyMemoryBuffer(b"A\xd2e\x80\xb4\x87\xe6\xb7")
-    assert 1234567890.1234567890 == proto.read_val(b, TType.DOUBLE)
+    assert proto.read_val(b, TType.DOUBLE) == 1234567890.1234567890
 
 
 def test_write_string():
@@ -253,7 +253,7 @@ def test_skip_bool():
     b.flush()
 
     proto.skip(b, TType.BOOL)
-    assert 123 == proto.read_val(b, TType.I32)
+    assert proto.read_val(b, TType.I32) == 123
 
 
 def test_skip_double():
@@ -263,7 +263,7 @@ def test_skip_double():
     b.flush()
 
     proto.skip(b, TType.DOUBLE)
-    assert 123 == proto.read_val(b, TType.I32)
+    assert proto.read_val(b, TType.I32) == 123
 
 
 def test_skip_string():
@@ -273,7 +273,7 @@ def test_skip_string():
     b.flush()
 
     proto.skip(b, TType.STRING)
-    assert 123 == proto.read_val(b, TType.I32)
+    assert proto.read_val(b, TType.I32) == 123
 
 
 def test_skip_list():
@@ -283,7 +283,7 @@ def test_skip_list():
     b.flush()
 
     proto.skip(b, TType.LIST)
-    assert 123 == proto.read_val(b, TType.I32)
+    assert proto.read_val(b, TType.I32) == 123
 
 
 def test_skip_map():
@@ -294,7 +294,7 @@ def test_skip_map():
     b.flush()
 
     proto.skip(b, TType.MAP)
-    assert 123 == proto.read_val(b, TType.I32)
+    assert proto.read_val(b, TType.I32) == 123
 
 
 def test_skip_struct():
@@ -308,7 +308,7 @@ def test_skip_struct():
     b.flush()
 
     proto.skip(b, TType.STRUCT)
-    assert 123 == proto.read_val(b, TType.I32)
+    assert proto.read_val(b, TType.I32) == 123
 
 
 def test_read_long_data():

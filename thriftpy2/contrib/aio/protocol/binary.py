@@ -107,13 +107,12 @@ def read_val(inbuf, ttype, spec=None, decode_response=True):
                 pass
         return byte_payload
 
-    elif ttype == TType.SET or ttype == TType.LIST:
+    elif ttype in [TType.SET, TType.LIST]:
         if isinstance(spec, tuple):
             v_type, v_spec = spec[0], spec[1]
         else:
             v_type, v_spec = spec, None
 
-        result = []
         r_type, sz = yield from read_list_begin(inbuf)
         # the v_type is useless here since we already get it from spec
         if r_type != v_type:
@@ -121,12 +120,9 @@ def read_val(inbuf, ttype, spec=None, decode_response=True):
                 yield from skip(inbuf, r_type)
             return []
 
-        for i in range(sz):
-            result.append(
-                (yield from read_val(
-                    inbuf, v_type, v_spec, decode_response
-                ))
-            )
+        result = [(yield from read_val(
+                            inbuf, v_type, v_spec, decode_response
+                        )) for _ in range(sz)]
         return result
 
     elif ttype == TType.MAP:
@@ -144,13 +140,13 @@ def read_val(inbuf, ttype, spec=None, decode_response=True):
 
         result = {}
         sk_type, sv_type, sz = yield from read_map_begin(inbuf)
-        if sk_type != k_type or sv_type != v_type:
+        if not (sk_type == k_type and sv_type == v_type):
             for _ in range(sz):
                 yield from skip(inbuf, sk_type)
                 yield from skip(inbuf, sv_type)
             return {}
 
-        for i in range(sz):
+        for _ in range(sz):
             k_val = yield from read_val(inbuf, k_type, k_spec, decode_response)
             v_val = yield from read_val(inbuf, v_type, v_spec, decode_response)
             result[k_val] = v_val
@@ -193,7 +189,7 @@ def read_struct(inbuf, obj, decode_response=True):
 
 @asyncio.coroutine
 def skip(inbuf, ftype):
-    if ftype == TType.BOOL or ftype == TType.BYTE:
+    if ftype in [TType.BOOL, TType.BYTE]:
         yield from inbuf.read(1)
 
     elif ftype == TType.I16:
@@ -212,14 +208,14 @@ def skip(inbuf, ftype):
         _size = yield from inbuf.read(4)
         yield from inbuf.read(unpack_i32(_size))
 
-    elif ftype == TType.SET or ftype == TType.LIST:
+    elif ftype in [TType.SET, TType.LIST]:
         v_type, sz = yield from read_list_begin(inbuf)
-        for i in range(sz):
+        for _ in range(sz):
             yield from skip(inbuf, v_type)
 
     elif ftype == TType.MAP:
         k_type, v_type, sz = yield from read_map_begin(inbuf)
-        for i in range(sz):
+        for _ in range(sz):
             yield from skip(inbuf, k_type)
             yield from skip(inbuf, v_type)
 

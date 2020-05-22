@@ -80,7 +80,7 @@ class Dispatcher:
     @asyncio.coroutine
     def get_phones(self, name):
         phone_numbers = self.ab.people[name].phones
-        return dict((p.type, p.number) for p in phone_numbers)
+        return {p.type: p.number for p in phone_numbers}
 
     @asyncio.coroutine
     def sleep(self, ms):

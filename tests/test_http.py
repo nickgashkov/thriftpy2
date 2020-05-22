@@ -59,7 +59,7 @@ class Dispatcher():
 
     def get_phones(self, name):
         phone_numbers = self.ab.people[name].phones
-        return dict((p.type, p.number) for p in phone_numbers)
+        return {p.type: p.number for p in phone_numbers}
 
     def sleep(self, ms):
         time.sleep(ms / 1000.0)

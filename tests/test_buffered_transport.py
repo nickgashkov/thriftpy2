@@ -54,8 +54,7 @@ class BufferedTransportTestCase(TestCase):
                              host="localhost", port=self.PORT,
                              proto_factory=self.PROTOCOL_FACTORY,
                              trans_factory=self.TRANSPORT_FACTORY)
-        p = multiprocessing.Process(target=server.serve)
-        return p
+        return multiprocessing.Process(target=server.serve)
 
     def client(self):
         return client_context(addressbook.AddressBookService,

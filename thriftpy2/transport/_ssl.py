@@ -129,9 +129,6 @@ def create_thriftpy_context(server_side=False, ciphers=None):
         else:
             context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH)
 
-        if ciphers:
-            context.set_ciphers(ciphers)
-
     else:
         context = SSLContext(ssl.PROTOCOL_SSLv23)
         context.options |= OP_NO_SSLv2
@@ -150,7 +147,7 @@ def create_thriftpy_context(server_side=False, ciphers=None):
                 "ssl check hostname support disabled, upgrade your python",
                 InsecurePlatformWarning)
 
-        if ciphers:
-            context.set_ciphers(ciphers)
+    if ciphers:
+        context.set_ciphers(ciphers)
 
     return context

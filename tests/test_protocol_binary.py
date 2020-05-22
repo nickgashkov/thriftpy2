@@ -24,7 +24,7 @@ def test_pack_i8():
 
 def test_unpack_i8():
     b = BytesIO(b"{")
-    assert 123 == proto.read_val(b, TType.I08)
+    assert proto.read_val(b, TType.I08) == 123
 
 
 def test_pack_i16():
@@ -35,7 +35,7 @@ def test_pack_i16():
 
 def test_unpack_i16():
     b = BytesIO(b"09")
-    assert 12345 == proto.read_val(b, TType.I16)
+    assert proto.read_val(b, TType.I16) == 12345
 
 
 def test_pack_i32():
@@ -46,7 +46,7 @@ def test_pack_i32():
 
 def test_unpack_i32():
     b = BytesIO(b"I\x96\x02\xd2")
-    assert 1234567890 == proto.read_val(b, TType.I32)
+    assert proto.read_val(b, TType.I32) == 1234567890
 
 
 def test_pack_i64():
@@ -57,7 +57,7 @@ def test_pack_i64():
 
 def test_unpack_i64():
     b = BytesIO(b"\x11\"\x10\xf4}\xe9\x81\x15")
-    assert 1234567890123456789 == proto.read_val(b, TType.I64)
+    assert proto.read_val(b, TType.I64) == 1234567890123456789
 
 
 def test_pack_double():
@@ -68,7 +68,7 @@ def test_pack_double():
 
 def test_unpack_double():
     b = BytesIO(b"A\xd2e\x80\xb4\x87\xe6\xb7")
-    assert 1234567890.1234567890 == proto.read_val(b, TType.DOUBLE)
+    assert proto.read_val(b, TType.DOUBLE) == 1234567890.1234567890
 
 
 def test_pack_string():

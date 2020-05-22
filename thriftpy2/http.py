@@ -210,8 +210,7 @@ class THttpClient(object):
         self.__custom_headers = headers
 
     def read(self, sz):
-        content = self.response.read(sz)
-        return content
+        return self.response.read(sz)
 
     def write(self, buf):
         self.__wbuf.write(buf)
@@ -324,7 +323,6 @@ def make_server(service, handler, host, port,
                 proto_factory=TBinaryProtocolFactory(),
                 trans_factory=TBufferedTransportFactory()):
     processor = TProcessor(service, handler)
-    server = THttpServer(processor, (host, port),
-                         itrans_factory=trans_factory,
-                         iprot_factory=proto_factory)
-    return server
+    return THttpServer(processor, (host, port),
+                             itrans_factory=trans_factory,
+                             iprot_factory=proto_factory)

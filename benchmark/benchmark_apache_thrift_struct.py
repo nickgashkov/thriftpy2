@@ -29,7 +29,7 @@ def make_addressbook():
 def encode(n, proto_factory=TBinaryProtocolFactory()):
     ab = make_addressbook()
     start = time.time()
-    for i in range(n):
+    for _ in range(n):
         serialize(ab, proto_factory)
     end = time.time()
     print("encode\t-> {}".format(end - start))
@@ -39,7 +39,7 @@ def decode(n, proto_factory=TBinaryProtocolFactory()):
     ab = ttypes.AddressBook()
     ab_encoded = serialize(make_addressbook())
     start = time.time()
-    for i in range(n):
+    for _ in range(n):
         deserialize(ab, ab_encoded, proto_factory)
     end = time.time()
     print("decode\t-> {}".format(end - start))

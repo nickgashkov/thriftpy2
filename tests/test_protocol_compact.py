@@ -38,7 +38,7 @@ def test_pack_byte():
 
 def test_unpack_byte():
     b, proto = gen_proto(b'\x4d')
-    assert 77 == proto._read_val(TType.BYTE)
+    assert proto._read_val(TType.BYTE) == 77
 
 
 def test_pack_i16():
@@ -49,7 +49,7 @@ def test_pack_i16():
 
 def test_unpack_i16():
     b, proto = gen_proto(b"\xf2\xc0\x01")
-    assert 12345 == proto._read_val(TType.I16)
+    assert proto._read_val(TType.I16) == 12345
 
 
 def test_pack_i32():
@@ -60,7 +60,7 @@ def test_pack_i32():
 
 def test_unpack_i32():
     b, proto = gen_proto(b"\xa4\x8b\xb0\x99\x09")
-    assert 1234567890 == proto._read_val(TType.I32)
+    assert proto._read_val(TType.I32) == 1234567890
 
 
 def test_pack_i64():
@@ -71,7 +71,7 @@ def test_pack_i64():
 
 def test_unpack_i64():
     b, proto = gen_proto(b"\xaa\x84\xcc\xde\x8f\xbd\x88\xa2\x22")
-    assert 1234567890123456789 == proto._read_val(TType.I64)
+    assert proto._read_val(TType.I64) == 1234567890123456789
 
 
 def test_pack_double():
@@ -82,7 +82,7 @@ def test_pack_double():
 
 def test_unpack_double():
     b, proto = gen_proto(b"\xb7\xe6\x87\xb4\x80\x65\xd2\x41")
-    assert 1234567890.1234567890 == proto._read_val(TType.DOUBLE)
+    assert proto._read_val(TType.DOUBLE) == 1234567890.1234567890
 
 
 def test_pack_string():
