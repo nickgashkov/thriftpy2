@@ -7,12 +7,12 @@ import const_thrift as const    # noqa
 
 
 def test_num_const():
-    assert -10 == const.NEGATIVE_I16
-    assert -123.456 == const.NEGATIVE_DOUBLE
+    assert const.NEGATIVE_I16 == -10
+    assert const.NEGATIVE_DOUBLE == -123.456
 
-    assert 10 == const.I16_CONST
-    assert 100000 == const.I32_CONST
-    assert 123.456 == const.DOUBLE_CONST
+    assert const.I16_CONST == 10
+    assert const.I32_CONST == 100000
+    assert const.DOUBLE_CONST == 123.456
 
 
 def test_string_const():

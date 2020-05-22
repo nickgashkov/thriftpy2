@@ -110,7 +110,7 @@ CTYPES = {
     TType.SET: CompactType.SET,
     TType.MAP: CompactType.MAP
 }
-TTYPES = dict((v, k) for k, v in CTYPES.items())
+TTYPES = {v: k for k, v in CTYPES.items()}
 TTYPES[CompactType.FALSE] = TType.BOOL
 
 
@@ -293,12 +293,9 @@ class TCompactProtocol(TProtocolBase):
                 v_type, v_spec = spec[0], spec[1]
             else:
                 v_type, v_spec = spec, None
-            result = []
             r_type, sz = self._read_collection_begin()
 
-            for i in range(sz):
-                result.append(self._read_val(v_type, v_spec))
-
+            result = [self._read_val(v_type, v_spec) for _ in range(sz)]
             self._read_collection_end()
             return result
 
@@ -317,14 +314,14 @@ class TCompactProtocol(TProtocolBase):
 
             result = {}
             sk_type, sv_type, sz = self._read_map_begin()
-            if sk_type != k_type or sv_type != v_type:
+            if not (sk_type == k_type and sv_type == v_type):
                 for _ in range(sz):
                     self.skip(sk_type)
                     self.skip(sv_type)
                 self._read_collection_end()
                 return {}
 
-            for i in range(sz):
+            for _ in range(sz):
                 k_val = self._read_val(k_type, k_spec)
                 v_val = self._read_val(v_type, v_spec)
                 result[k_val] = v_val
@@ -470,7 +467,7 @@ class TCompactProtocol(TProtocolBase):
         elif ttype == TType.STRING:
             self._write_string(val)
 
-        elif ttype == TType.LIST or ttype == TType.SET:
+        elif ttype in [TType.LIST, TType.SET]:
             if isinstance(spec, tuple):
                 e_type, t_spec = spec[0], spec[1]
             else:
@@ -532,25 +529,6 @@ class TCompactProtocol(TProtocolBase):
                 self.skip(ttype)
                 self._read_field_end()
             self._read_struct_end()
-
-        elif ttype == TType.MAP:
-            ktype, vtype, size = self._read_map_begin()
-            for i in range(size):
-                self.skip(ktype)
-                self.skip(vtype)
-            self._read_collection_end()
-
-        elif ttype == TType.SET:
-            etype, size = self._read_collection_begin()
-            for i in range(size):
-                self.skip(etype)
-            self._read_collection_end()
-
-        elif ttype == TType.LIST:
-            etype, size = self._read_collection_begin()
-            for i in range(size):
-                self.skip(etype)
-            self._read_collection_end()
 
 
 class TCompactProtocolFactory(object):

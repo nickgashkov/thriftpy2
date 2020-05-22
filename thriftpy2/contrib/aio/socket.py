@@ -279,9 +279,7 @@ class TAsyncServerSocket(object):
             try:
                 _sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEPORT, 1)
             except socket.error as err:
-                if err[0] in (errno.ENOPROTOOPT, errno.EINVAL):
-                    pass
-                else:
+                if err[0] not in (errno.ENOPROTOOPT, errno.EINVAL):
                     raise
         _sock.settimeout(None)
         self.raw_sock = _sock
@@ -295,15 +293,14 @@ class TAsyncServerSocket(object):
 
     @asyncio.coroutine
     def accept(self, callback):
-        server = yield from self.sock_factory(
-            lambda reader, writer: asyncio.wait_for(
-                callback(StreamHandler(reader, writer)),
-                self.client_timeout
-            ),
-            sock=self.raw_sock,
-            ssl=self.ssl_context
-        )
-        return server
+        return (yield from self.sock_factory(
+                lambda reader, writer: asyncio.wait_for(
+                    callback(StreamHandler(reader, writer)),
+                    self.client_timeout
+                ),
+                sock=self.raw_sock,
+                ssl=self.ssl_context
+            ))
 
     def close(self):
         if not self.raw_sock:

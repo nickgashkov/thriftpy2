@@ -113,9 +113,8 @@ class TTrackedClient(TClient, VersionMixin):
         exception = None
         status = False
         try:
-            res = super(TTrackedClient, self)._req(_api, *args, **kwargs)
             status = True
-            return res
+            return super(TTrackedClient, self)._req(_api, *args, **kwargs)
         except BaseException as e:
             exception = e
             raise

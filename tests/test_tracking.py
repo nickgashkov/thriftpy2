@@ -65,7 +65,7 @@ _, db_file = tempfile.mkstemp()
 def _get_port():
     while True:
         port = 20000 + random.randint(1, 9999)
-        for i in range(5):
+        for _ in range(5):
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             result = sock.connect_ex(('127.0.0.1', port))
             if result == 0:
@@ -362,7 +362,7 @@ def test_tracker_chain(server, server1, server2, dbm_db, tracker_ctx):
     headers = [pickle.loads(db[i]) for i in headers]
     headers.sort(key=lambda x: x["seq"])
 
-    assert len(set([i["request_id"] for i in headers])) == 2
+    assert len({i["request_id"] for i in headers}) == 2
 
     seqs = [i["seq"] for i in headers]
     metas = [i["meta"] for i in headers]

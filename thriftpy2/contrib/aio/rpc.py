@@ -79,7 +79,6 @@ def make_server(service, handler,
     else:
         raise ValueError("Either host/port or unix_socket must be provided.")
 
-    server = TAsyncServer(processor, server_socket,
-                          iprot_factory=proto_factory,
-                          itrans_factory=trans_factory, loop=loop)
-    return server
+    return TAsyncServer(processor, server_socket,
+                              iprot_factory=proto_factory,
+                              itrans_factory=trans_factory, loop=loop)
