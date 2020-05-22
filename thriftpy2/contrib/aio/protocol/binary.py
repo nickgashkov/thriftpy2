@@ -140,7 +140,7 @@ def read_val(inbuf, ttype, spec=None, decode_response=True):
 
         result = {}
         sk_type, sv_type, sz = yield from read_map_begin(inbuf)
-        if not (sk_type == k_type and sv_type == v_type):
+        if sk_type != k_type or sv_type != v_type:
             for _ in range(sz):
                 yield from skip(inbuf, sk_type)
                 yield from skip(inbuf, sv_type)

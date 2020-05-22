@@ -314,7 +314,7 @@ class TCompactProtocol(TProtocolBase):
 
             result = {}
             sk_type, sv_type, sz = self._read_map_begin()
-            if not (sk_type == k_type and sv_type == v_type):
+            if sk_type != k_type or sv_type != v_type:
                 for _ in range(sz):
                     self.skip(sk_type)
                     self.skip(sv_type)
